@@ -1,0 +1,113 @@
+!-------------------------------------------------------------------------------
+!
+!    U R X V T - M L - Setting
+!
+!
+! Taille par défaut
+!# URxvt*geometry: 74x27
+!
+!# ! Police TTF
+!# URxvt*font: xft:Bitstream Vera Sans Mono:style=Regular:pixelsize=13:antialias=true
+!
+!# ! Taille du buffer et barre de défilement
+!# URxvt*saveLines: 10000
+!# URxvt*scrollBar: false
+!# URxvt*scrollBar_right: false
+!# URxvt*scrollstyle: plain
+!# URxvt*matcher.button:   1
+!
+!# ! Curseur
+!# URxvt*cursorColor:         #939393
+!# URxvt*cursorBlink:      false
+!# URxvt*cursorUnderline:  false
+!
+!
+!# ! Nom du terminal 
+!# URxvt*termName:         rxvt-unicode
+!
+!# ! Utilisation de la vraie transparence (transparent=100 - 0=opaque)
+!# URxvt.transparent:        false
+!# !URxvt.shading:            100
+!
+!# ! Apparence
+!# !URxvt*background:         #5E5E5E
+!# !URxvt*foreground:         #939393
+!# URxvt*background:         #191919
+!# URxvt*foreground:         white
+!# URxvt*allow_bold:         true
+!
+!# ! Autres paramètres 
+!# URxvt*colorBD:          #939393
+!# URxvt*internalBorder:   1
+!# zXft*dpi:                96
+!# Xft*antialias:          true
+!# Xft*hinting:            full
+!# URxvt.loginShell:       true
+!# URxvt.saveLines:        666
+!# URxvt*mapAlert:         true
+!# !URxvt*urgentOnBell:     true
+!# !URxvt*inheritPixmap:    true
+!# !URxvt*tintColor:        black
+!# URxvt*shading:          60
+!
+!
+!# *color0: black
+!# *color1: red3
+!# *color2: green3
+!# *color3: yellow3
+!# *color4: blue2
+!# *color5: magenta3
+!# *color6: cyan3
+!# *color7: gray90
+!# *color8: gray50
+!# *color9: red
+!# *color10: green
+!# *color11: yellow
+!# *color12: rgb:5c/5c/ff
+!# *color13: magenta
+!# *color14: cyan
+!# *color15: white
+
+!URXVT
+URxvt*termName:    rxvt
+URxvt*scrollBar:   false
+URxvt*urlLauncher: firefox
+URxvt*buffered: true
+!URxvt*font: xft:terminus:pixelsize=14
+URxvt.font:           xft:terminus:medium:size=10
+URxvt.boldFont:       xft:terminus:bold:size=10
+URxvt.italicFont:     xft:terminus:medium:italic:size=10
+URxvt.boldItalicFont: xft:terminus:bold:italic:size=10
+!URxvt*font:           -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
+!URxvt*boldFont:       -*-terminus-bold-*-*-*-12-*-*-*-*-*-*-*
+!URxvt*italicFont:     -*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*
+!URxvt*boldItalicFont: -*-terminus-bold-r-*-*-12-*-*-*-*-*-*-*
+URxvt*transparent: true
+URxvt*shading: 100
+
+!XTERM
+xterm*toolBar: false
+xterm*scrollBar: fasle
+xterm*background: #1a1918
+xterm*foreground: #a4a4a4
+xterm*font: -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
+
+!COLOURS
+*background:  #1a1918
+*foreground:  #807b76
+!#include "/home/jack/.config/Xcolours/allblue"
+!#include "/home/mathias/.config/Xcolours/allgreen"
+#include "/home/mathias/.config/Xcolours/bright"
+!#include "/home/mathias/.config/Xcolours/bright2"
+!#include "/home/mathias/.config/Xcolours/yelloworange"
+!#include "/home/mathias/.config/Xcolours/greenish"
+!#include "/home/mathias/.config/Xcolours/brightest"
+!#include "/home/mathias/.config/Xcolours/boring"
+!#include "/home/mathias/.config/Xcolours/pale"
+!#include "/home/mathias/.config/Xcolours/pale2"
+!#include "/home/mathias/.config/Xcolours/darkish"
+!#include "/home/mathias/.config/Xcolours/brightorange"
+!#include "/home/mathias/.config/Xcolours/boring2"
+
+!XSCREENSAVER
+#include "/home/mathias/.config/Xcolours/xscreendark"
