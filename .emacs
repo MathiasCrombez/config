@@ -92,6 +92,21 @@
 ;; Des espaces pour indenter.
 (setq indent-tabs-mode nil)
 (setq c-basic-offset 8)
+(setq c-default-style "k&r")
+
+(setq sh-basic-offset 4)
+(setq sh-default-style "gnu")
+
+(setq lua-basic-offset 4)
+(setq lua-default-style "gnu")
+
+(setq elisp-basic-offset 4)
+(setq elisp-default-style "gnu")
+
+(setq lua-indent-level 4)
+(setq lua-electric-flag nil)
+(defun lua-abbrev-mode-off () (abbrev-mode 0))
+(add-hook 'lua-mode-hook 'lua-abbrev-mode-off)
 
 ;;----------------------------------------------------------------------
 ;; COMPILATION
@@ -99,7 +114,7 @@
 
 ( setq-default 
   compile-command "make"
-  -j 8 ;;pour lancer 8 processus en parallèle.
+  -j 2 ;;pour lancer 8 processus en parallèle.
   compilation-read-command t
   compilation-ask-about-save nil
   compilation-window-height 12
@@ -143,15 +158,13 @@
 (setq display-time-24hr-format t)
 ;;(display-battery-mode t)
 
-;;(setq major-mode 'text-mode)
-;;(add-hook 'text-mode-hook 'turn-on-auto-fill)
-
-;;(setq-default auto-fill-function 'do-auto-fill)
+;; (setq-default auto-fill-function 'do-auto-fill)
 ;; (add-hook 'text-mode-hook
 ;; 	  '(lambda ()
 ;; 	    (auto-fill-mode 1)
-;; 	    (setq default-justification 'full))
-;; 	  )
+;; ;; 	    (setq default-justification 'full)
+;; 	    )
+;;  	  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Lua mode
@@ -159,3 +172,15 @@
 
 (setq auto-mode-alist (cons '("\.lua$" . lua-mode) auto-mode-alist))
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GNUS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(custom-set-variables
+ '(read-mail-command (quote gnus))
+ '(message-directory "~/News"))
+
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "elinks")

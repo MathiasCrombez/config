@@ -1,19 +1,21 @@
 HISTFILE=~/.histfile
 HISTSIZE=50000
 SAVEHIST=50000
-setopt appendhistory autocd extendedglob nomatch notify
+setopt appendhistory autocd extendedglob nomatch notify completealiases
 unsetopt beep
 bindkey -e
 
 # Vars used later on by Zsh
 export EDITOR="emacs"
 export BROWSER=firefox
+export MANPAGER=/usr/bin/most
 
 ##################################################################
 # Stuff to make my life easier
 
 # allow approximate
-zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*' completer _complete _match _approximate 
+zstyle ':completion:*' menu select
 zstyle ':completion:*:match:*' original only
 zstyle ':completion:*:approximate:*' max-errors 1 numeric
 
@@ -39,8 +41,8 @@ alias -s jpg=feh
 alias -s gif=feg
 alias -s sxw=soffice
 alias -s doc=soffice
-alias -s gz=tar -xzvf
-alias -s bz2=tar -xjvf
+alias -s gz='tar -xzvf'
+alias -s bz2='tar -xjvf'
 alias -s java=$EDITOR
 alias -s txt=$EDITOR
 alias -s PKGBUILD=$EDITOR
@@ -58,14 +60,25 @@ alias vol_down='/usr/local/bin/pa_vol_down'
 alias vol_up='/usr/local/bin/pa_vol_up'
 alias vol_mute='/usr/local/bin/pa_vol_mute'
 alias vol_status='pacmd dump|grep "set-sink"'
-alias pacman='pacman-color'
+# vdpau bug
+#alias mplayer='mplayer -vo xv'
+#pacman alias
+alias pacsyu='sudo pacman -Syu'
+alias pacss='sudo pacman -Ss'
+alias pacs='sudo pacman -S'
+rfc () {
+    elinks "http://www.rfc-editor.org/rfc/rfc$1.txt"
+}
+alias comix='mcomix'
+alias boot='wol 1c:6f:65:cf:85:48'
 ##################################################################
 # Binding
 
 # for rxvt
 bindkey "\e[7~" beginning-of-line # Home
 bindkey "\e[8~" end-of-line # End
-
+bindkey "^[^[[D" backward-word
+bindkey "^[^[[C" forward-word
 
 
 # The following lines were added by compinstall
