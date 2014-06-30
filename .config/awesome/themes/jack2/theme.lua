@@ -25,7 +25,7 @@ theme.border_marked = "#a4a4a4"
 theme.taglist_squares_sel   = "/home/mathias/.config/awesome/themes/jack2/taglist/squarefw.png"
 theme.taglist_squares_unsel = "/home/mathias/.config/awesome/themes/jack2/taglist/squarew.png"
 
-theme.tasklist_floating_icon = "/home/mathias/.config/awesome/themes/jack2/tasklist/floatingw.png"
+-- theme.tasklist_floating_icon = "/home/mathias/.config/awesome/themes/jack2/tasklist/floatingw.png"
 
 -- MENU
 theme.menu_submenu_icon = "/home/mathias/.config/awesome/themes/jack2/submenu.png"
@@ -33,6 +33,6 @@ theme.menu_height = "14"
 theme.menu_width  = "100"
 
 -- WALLPAPER
-theme.wallpaper_cmd = { "awsetbg /home/mathias/.config/awesome/background/bg.png" }
+--theme.wallpaper_cmd = { "awsetbg /home/mathias/.config/awesome/background/bg.png" }
 
 return theme
