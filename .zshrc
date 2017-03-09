@@ -61,7 +61,6 @@ rfc () {
 }
 
 alias ssh='TERM=rxvt ssh'
-
 alias git-root='cd $(git rev-parse --show-cdup)'
 
 
