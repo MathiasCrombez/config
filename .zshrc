@@ -51,17 +51,20 @@ alias -s PKGBUILD=$EDITOR
 alias ls='ls --color=auto -F'
 alias ll='ls -larth'
 alias l='ls -aF'
-alias grep='grep --color=auto'
+alias grep='grep --exclude="*.svn*" --exclude="*.git*" -sI --color=auto'
 alias du='du -h'
 alias df='df -h'
-alias hist="grep '$1' $HOME/.zsh_history"
 alias mem="free -m"
-rfc () {
-    elinks "http://www.rfc-editor.org/rfc/rfc$1.txt"
-}
 
 alias ssh='TERM=rxvt ssh'
 alias git-root='cd $(git rev-parse --show-cdup)'
+if [ -f /usr/share/autojump/autojump.sh ]; then
+    . /usr/share/autojump/autojump.sh
+fi
+alias vim-basic='vim ~/.vim/config/basic.vim'
+alias vim-extended='vim ~/.vim/config/extended.vim'
+alias vim-filetypes='vim ~/.vim/config/filetypes.vim'
+alias vim-plugins='vim ~/.vim/config/plugins_config.vim'
 
 
 man() {
@@ -93,31 +96,31 @@ compinit
 # End of lines added by compinstall
 
 function precmd {
-    local TERMWIDTH
-    (( TERMWIDTH = ${COLUMNS} - 1 ))
-    ###
-    # Truncate the path if it's too long.
-    
-    PR_FILLBAR=""
-    PR_PWDLEN=""
-    
-    local promptsize=${#${(%):---(%n@%m:%l)---()--}}
-    local pwdsize=${#${(%):-%~}}
-    
-    if [[ "$promptsize + $pwdsize" -gt $TERMWIDTH ]]; then
-        ((PR_PWDLEN=$TERMWIDTH - $promptsize))
-    else
-        PR_FILLBAR="\${(l.(($TERMWIDTH - ($promptsize + $pwdsize)))..${PR_HBAR}.)}"
-    fi
-    
-    ###
-    # Get APM info.
-    
-    if which ibam > /dev/null; then
-        PR_APM_RESULT=`ibam --percentbattery`
-    elif which apm > /dev/null; then
-        PR_APM_RESULT=`apm`
-    fi
+local TERMWIDTH
+(( TERMWIDTH = ${COLUMNS} - 1 ))
+###
+# Truncate the path if it's too long.
+
+PR_FILLBAR=""
+PR_PWDLEN=""
+
+local promptsize=${#${(%):---(%n@%m:%l)---()--}}
+local pwdsize=${#${(%):-%~}}
+
+if [[ "$promptsize + $pwdsize" -gt $TERMWIDTH ]]; then
+    ((PR_PWDLEN=$TERMWIDTH - $promptsize))
+else
+    PR_FILLBAR="\${(l.(($TERMWIDTH - ($promptsize + $pwdsize)))..${PR_HBAR}.)}"
+fi
+
+###
+# Get APM info.
+
+if which ibam > /dev/null; then
+    PR_APM_RESULT=`ibam --percentbattery`
+elif which apm > /dev/null; then
+    PR_APM_RESULT=`apm`
+fi
 
 }
 
@@ -136,6 +139,22 @@ setprompt () {
     # Need this so the prompt will work.
 
     setopt prompt_subst
+    #autoload -Uz vcs_info
+    #zstyle ':vcs_info:*' actionformats \
+    #        '-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+    #zstyle ':vcs_info:*' formats       \
+    #        '%F{3} %F{4}[%F{2}%b%F{4}]%f'
+    #zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
+
+    #zstyle ':vcs_info:*' enable git cvs svn
+
+   # or use pre_cmd, see man zshcontrib
+    #vcs_info_wrapper() {
+    #    vcs_info
+    #    if [ -n "$vcs_info_msg_0_" ]; then
+    #        echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
+    #    fi
+   #}
 
 
     ###
@@ -198,42 +217,8 @@ setprompt () {
     ###
     # Finally, the prompt.
 
-    PROMPT='$PR_SET_CHARSET$PR_RED%(!.%SROOT%s.)$PR_BLUE%m$PR_SHIFT_IN$PR_HBAR%(?..$PR_RED%?$PR_NO_COLOUR)$PR_SHIFT_OUT\
-$PR_BLUE>$PR_NO_COLOUR '
+    PROMPT='$PR_SET_CHARSET$PR_RED%(!.%SROOT%s.)$PR_BLUE%m$PR_BLUE$PR_SHIFT_IN$PR_HBAR%(?..$PR_RED%?$PR_NO_COLOUR)$PR_SHIFT_OUT$PR_BLUE>$PR_NO_COLOUR '
     RPROMPT=' $PR_RED(%$PR_PWDLEN<...<%~%<<$PR_RED)$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT$PR_NO_COLOUR'
-
-
-#    PROMPT='$PR_SET_CHARSET$PR_STITLE${(e)PR_TITLEBAR}\
-#    PROMPT='$PR_SET_CHARSET\
-#$PR_CYAN$PR_SHIFT_IN$PR_ULCORNER$PR_BLUE$PR_HBAR$PR_SHIFT_OUT(\
-#$PR_RED%(!.%SROOT%s.%n)$PR_MAGENTA@%m:%l\
-#$PR_BLUE)$PR_SHIFT_IN$PR_HBAR$PR_CYAN$PR_HBAR${(e)PR_FILLBAR}$PR_BLUE$PR_HBAR$PR_SHIFT_OUT(\
-#$PR_MAGENTA%$PR_PWDLEN<...<%~%<<\
-#$PR_BLUE)$PR_SHIFT_IN$PR_HBAR$PR_CYAN$PR_URCORNER$PR_SHIFT_OUT\
-#
-#$PR_CYAN$PR_SHIFT_IN$PR_LLCORNER$PR_BLUE$PR_HBAR$PR_SHIFT_OUT(\
-#%(?..$PR_LIGHT_RED%?$PR_BLUE:)\
-#${(e)PR_APM}$PR_YELLOW%D{%H:%M}\
-#$PR_LIGHT_BLUE:%(!.$PR_RED.$PR_WHITE)%#$PR_BLUE)$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT\
-#$PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT\
-#$PR_NO_COLOUR '
-#
-#    case $TERM in
-#        xterm*) RPROMPT=' $PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_BLUE$PR_HBAR$PR_SHIFT_OUT\
-#($PR_YELLOW%D{%a,%d %b}$PR_BLUE)$PR_SHIFT_IN$PR_HBAR$PR_CYAN$PR_LRCORNER$PR_SHIFT_OUT$PR_NO_COLOUR'
-#        ;;
-#        rxvt*) RPROMPT=' $PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_BLUE$PR_HBAR$PR_SHIFT_OUT\
-#($PR_YELLOW%D{%a,%d %b}$PR_BLUE)$PR_SHIFT_IN$PR_HBAR$PR_CYAN$PR_LRCORNER$PR_SHIFT_OUT$PR_NO_COLOUR'
-#        ;;
-#        linux) RPROMPT='' #RPROMPT=' $PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_BLUE$PR_HBAR$PR_SHIFT_OUT\
-#        #($PR_YELLOW%D{%a,%d %b}$PR_BLUE)$PR_SHIFT_IN$PR_HBAR$PR_CYAN$PR_LRCORNER$PR_SHIFT_OUT$PR_NO_COLOUR    '
-#        ;;
-#    esac
-#
-#    PS2='$PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT\
-#$PR_BLUE$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT(\
-#$PR_LIGHT_GREEN%_$PR_BLUE)$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT\
-#$PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT$PR_NO_COLOUR '
 }
 
 setprompt
