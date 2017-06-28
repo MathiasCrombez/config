@@ -3,10 +3,12 @@
 !URXVT
 URxvt*termName:    rxvt-unicode-256color
 URxvt*scrollBar:   false
-URxvt*perl-ext-common:  default,url-select,clipboard
-URxvt*keysym.M-u:       perl:url-select:select_next
+URxvt*perl-ext-common:  default,tabbed
+!!URxvt*perl-ext-common:  default,url-select,clipboard
+!!URxvt*keysym.M-u:       perl:url-select:select_next
 URxvt*urlLauncher:      firefox
 URxvt*underlineURLs:    true
+URxvt.intensityStyles: false
 
 
 
