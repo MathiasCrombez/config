@@ -3,7 +3,7 @@ filetype off
 """"""""""""""""""""""""""""""
 " => Load vundle paths
 """"""""""""""""""""""""""""""
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
 " let vundle manage vundle
 " required!
@@ -44,6 +44,7 @@ let g:ctrlp_working_path_mode = 0
 let g:ctrlp_map = '<c-f>'
 map <leader>j :CtrlP<cr>
 map <c-b> :CtrlPBuffer<cr>
+nnoremap <leader>. :CtrlPTag<cr>
 
 let g:ctrlp_max_height = 20
 let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
@@ -105,7 +106,7 @@ au FileType mako vmap Si S"i${ _(<esc>2f"a) }<esc>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
 let g:airline_theme = "solarized"
 let g:airline#extensions#tabline#enabled = 1
 set laststatus=2
@@ -179,3 +180,7 @@ Plugin 'altercation/vim-colors-solarized'
 set background=dark
 
 colorscheme solarized
+
+" = Tabular * align text
+Plugin 'godlygeek/tabular.git'
+

@@ -75,7 +75,7 @@ command W w !sudo tee % > /dev/null
 set so=7
 
 " Avoid garbled characters in Chinese language windows OS
-let $LANG='en' 
+let $LANG='en'
 set langmenu=en
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
@@ -105,9 +105,9 @@ set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
 
 " In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-  set mouse=a
-endif
+"if has('mouse')
+"  set mouse=a
+"endif
 
 " Ignore case when searching
 set ignorecase
@@ -145,7 +145,7 @@ set foldcolumn=1
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
-syntax enable 
+syntax enable
 
 try
     colorscheme peaksea
@@ -228,10 +228,6 @@ map <silent> <leader><cr> :noh<cr>
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
-map <C-l> <C-W>l
-
-" Close the current buffer
-map <leader>bd :Bclose<cr>
 
 " Close all the buffers
 map <leader>ba :bufdo bd<cr>
@@ -435,3 +431,6 @@ function! <SID>BufcloseCloseIt()
      execute("bdelete! ".l:currentBufNum)
    endif
 endfunction
+
+set tags=tags;
+set tags+=.git/tags;

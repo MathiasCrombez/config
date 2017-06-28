@@ -19,7 +19,9 @@ set background=dark
 let g:solarized_bold=1
 let g:solarized_underline=1
 let g:solarized_italic=1
-let g:solarized_contrast="high"
+let g:solarized_termtrans=1
+let g:solarized_hitrail=1
+let g:solarized_contrast="normal"
 colorscheme solarized
 
 
