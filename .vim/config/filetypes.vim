@@ -61,3 +61,9 @@ endfunction
 au FileType coffee call CoffeeScriptFold()
 
 au FileType gitcommit call setpos('.', [0, 1, 1, 0])
+
+""""""""""""""""""""""""""""""
+" => C section 
+"""""""""""""""""""""""""""""""
+au FileType c setl cindent
+au FileType c setl cinoptions :0,l1,t0,g0,(0

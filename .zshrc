@@ -1,14 +1,103 @@
+# If you come from bash you might have to change your $PATH.
+export PATH=/sbin:/usr/sbin:$HOME/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
+
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-zsh is loaded.
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="agnoster"
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion. Case
+# sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git)
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
 HISTFILE=~/.histfile
 HISTSIZE=50000
 SAVEHIST=50000
-setopt appendhistory autocd extendedglob nomatch notify completealiases
+setopt appendhistory autocd extendedglob nomatch notify completealiases extended_glob
 unsetopt beep
 bindkey -e
+
+# Remove this damned non-breaking space from my keyboard !!!
+setxkbmap -option "nbsp:none"
 
 # Vars used later on by Zsh
 export EDITOR="vim"
 export BROWSER=firefox
 export MANPAGER="/usr/bin/less"
+#export PATH="~/bin":$PATH
 
 ##################################################################
 # Stuff to make my life easier
@@ -66,6 +155,12 @@ alias vim-extended='vim ~/.vim/config/extended.vim'
 alias vim-filetypes='vim ~/.vim/config/filetypes.vim'
 alias vim-plugins='vim ~/.vim/config/plugins_config.vim'
 
+eval `dircolors ~/.solarized/dircolors`
+
+
+dockergo () {
+    [ -d "$2" ] && [ -n "$1" ] && cd $2 && docker run -ti --rm -v $(pwd):/home -w /home -u $(id -u) $1 bash
+}
 
 man() {
     env LESS_TERMCAP_mb=$'\E[01;31m' \
@@ -76,6 +171,21 @@ man() {
         LESS_TERMCAP_ue=$'\E[0m' \
         LESS_TERMCAP_us=$'\E[04;38;5;146m' \
         man "$@"
+}
+
+dts () {
+	id=1
+	target=""
+	[ -n "$1" ] && id=$1
+	file="arch/arm64/boot/dts/renesas/r8a7795-nis8200-db-a-0${id}.dts"
+	[ -f "packages/kernel-rcar/${file}" ] && target="packages/kernel-rcar/${file}"
+	[ -f "kernel-rcar/${file}" ] && target="kernel-rcar/${file}"
+	[ -f "${file}" ] && target="${file}"
+	if [ -n "$target" ]; then
+		vim ${target}
+	else
+		echo "$file not found"
+	fi
 }
 
 ##################################################################
@@ -94,133 +204,5 @@ zstyle :compinstall filename '$HOME/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
-
-function precmd {
-local TERMWIDTH
-(( TERMWIDTH = ${COLUMNS} - 1 ))
-###
-# Truncate the path if it's too long.
-
-PR_FILLBAR=""
-PR_PWDLEN=""
-
-local promptsize=${#${(%):---(%n@%m:%l)---()--}}
-local pwdsize=${#${(%):-%~}}
-
-if [[ "$promptsize + $pwdsize" -gt $TERMWIDTH ]]; then
-    ((PR_PWDLEN=$TERMWIDTH - $promptsize))
-else
-    PR_FILLBAR="\${(l.(($TERMWIDTH - ($promptsize + $pwdsize)))..${PR_HBAR}.)}"
-fi
-
-###
-# Get APM info.
-
-if which ibam > /dev/null; then
-    PR_APM_RESULT=`ibam --percentbattery`
-elif which apm > /dev/null; then
-    PR_APM_RESULT=`apm`
-fi
-
-}
-
-setopt extended_glob
-preexec () {
-    if [[ $term == screen* ]]; then
-        local cmd=${1[(wr)^(*=*|sudo|-*)]}
-        echo -ne "\ek$cmd\e\\"
-    fi
-    print -Pn "\e]0;%~ ($1)\a"
-}
-
-
-setprompt () {
-    ###
-    # Need this so the prompt will work.
-
-    setopt prompt_subst
-    #autoload -Uz vcs_info
-    #zstyle ':vcs_info:*' actionformats \
-    #        '-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
-    #zstyle ':vcs_info:*' formats       \
-    #        '%F{3} %F{4}[%F{2}%b%F{4}]%f'
-    #zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
-
-    #zstyle ':vcs_info:*' enable git cvs svn
-
-   # or use pre_cmd, see man zshcontrib
-    #vcs_info_wrapper() {
-    #    vcs_info
-    #    if [ -n "$vcs_info_msg_0_" ]; then
-    #        echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
-    #    fi
-   #}
-
-
-    ###
-    # See if we can use colors.
-
-    autoload colors zsh/terminfo
-    if [[ "$terminfo[colors]" -ge 8 ]]; then
-        colors
-    fi
-    for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
-        eval PR_$color='%{$terminfo[bold]$fg[${(L)color}]%}'
-        eval PR_LIGHT_$color='%{$fg[${(L)color}]%}'
-        (( count = $count + 1 ))
-    done
-    PR_NO_COLOUR="%{$terminfo[sgr0]%}"
-
-
-    ###
-    # See if we can use extended characters to look nicer.
-
-    typeset -A altchar
-    set -A altchar ${(s..)terminfo[acsc]}
-    PR_SET_CHARSET="%{$terminfo[enacs]%}"
-    PR_SHIFT_IN="%{$terminfo[smacs]%}"
-    PR_SHIFT_OUT="%{$terminfo[rmacs]%}"
-    PR_HBAR=${altchar[q]:--}
-    PR_ULCORNER=${altchar[l]:--}
-    PR_LLCORNER=${altchar[m]:--}
-    PR_LRCORNER=${altchar[j]:--}
-    PR_URCORNER=${altchar[k]:--}
-
-
-    ###
-    # Decide if we need to set titlebar text.
-
-    case $TERM in
-        xterm*)
-            PR_TITLEBAR=$'%{\e]0;%n@%m:%~ | ${COLUMNS}x${LINES} | %y\a%}'
-            ;;
-        screen*)
-            PR_TITLEBAR=$'%{\e_#\005n (\005t) | %(!.ROOT | .)%n@%m:%~ | %y\e\\%}'
-            ;;
-        rxvt*)
-            PR_TITLEBAR=$'%{\e]0;%(!.ROOT | .)%n@%m:%~ | %y\a%}'
-            ;;
-        *)
-            PR_TITLEBAR=''
-            ;;
-    esac
-
-
-    ###
-    # Decide whether to set a screen title
-    if [[ $TERM == screen* ]]; then
-        PR_STITLE=$'%{\ekzsh\e\\%}'
-    else 
-        PR_STITLE=''
-    fi
-
-    ###
-    # Finally, the prompt.
-
-    PROMPT='$PR_SET_CHARSET$PR_RED%(!.%SROOT%s.)$PR_BLUE%m$PR_BLUE$PR_SHIFT_IN$PR_HBAR%(?..$PR_RED%?$PR_NO_COLOUR)$PR_SHIFT_OUT$PR_BLUE>$PR_NO_COLOUR '
-    RPROMPT=' $PR_RED(%$PR_PWDLEN<...<%~%<<$PR_RED)$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT$PR_NO_COLOUR'
-}
-
-setprompt
-
-
+DEFAULT_USER=mathias
+prompt_context(){}

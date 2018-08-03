@@ -16,13 +16,9 @@ set guioptions-=L
 
 " Colorscheme
 set background=dark
-let g:solarized_bold=1
-let g:solarized_underline=1
-let g:solarized_italic=1
-let g:solarized_termtrans=1
-let g:solarized_hitrail=1
-let g:solarized_contrast="normal"
 colorscheme solarized
+
+call togglebg#map("<F5>")
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -73,14 +69,36 @@ imap ½ $
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Parenthesis/bracket
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"vnoremap $1 <esc>`>a)<esc>`<i(<esc>
-"vnoremap $2 <esc>`>a]<esc>`<i[<esc>
-"vnoremap $3 <esc>`>a}<esc>`<i{<esc>
-"vnoremap $$ <esc>`>a"<esc>`<i"<esc>
-"vnoremap $q <esc>`>a'<esc>`<i'<esc>
-"vnoremap $e <esc>`>a"<esc>`<i"<esc>
+vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+vnoremap $$ <esc>`>a"<esc>`<i"<esc>
+vnoremap $q <esc>`>a'<esc>`<i'<esc>
+vnoremap $e <esc>`>a"<esc>`<i"<esc>
 
 " Map auto complete of (, ", ', [
+"inoremap ( ()<Esc>i
+"inoremap { {<CR><BS>}<Esc>ko
+
+"inoremap ( ()<Esc>:call BC_AddChar(")")<CR>i
+"inoremap { {<CR>}<Esc>:call BC_AddChar("}")<CR><Esc>kA<CR>
+"inoremap [ []<Esc>:call BC_AddChar("]")<CR>i
+"inoremap " ""<Esc>:call BC_AddChar("\"")<CR>i
+" jump out of parenthesis
+
+function! BC_AddChar(schar)
+ if exists("b:robstack")
+ let b:robstack = b:robstack . a:schar
+ else
+ let b:robstack = a:schar
+ endif
+endfunction
+
+function! BC_GetChar()
+ let l:char = b:robstack[strlen(b:robstack)-1]
+ let b:robstack = strpart(b:robstack, 0, strlen(b:robstack)-1)
+ return l:char
+endfunction
 "inoremap $1 ()<esc>i
 "inoremap $2 []<esc>i
 "inoremap $3 {}<esc>i

@@ -104,15 +104,16 @@ au FileType mako vmap Si S"i${ _(<esc>2f"a) }<esc>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-airline config (force color)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-let g:airline_powerline_fonts = 0
+set t_Co=256
+let g:airline_powerline_fonts = 1
 let g:airline_theme = "solarized"
-let g:airline#extensions#tabline#enabled = 1
+let g:airline_solarized_bg='dark'
+"let g:airline#extensions#tabline#enabled = 1
 set laststatus=2
 set showtabline=2
-set t_Co=256
-set term=rxvt-unicode-256color
+"set term=rxvt-unicode-256color
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntastic (syntax checker)
@@ -134,8 +135,8 @@ nnoremap <silent> <leader>l :call SyntasticCheckCoffeescript()<cr>
 " => Git gutter (Git diff)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plugin 'airblade/vim-gitgutter'
-let g:gitgutter_enabled=0
 nnoremap <silent> <leader>d :GitGutterToggle<cr>
+let g:airline#extensions#hunks#non_zero_only = 1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -176,11 +177,49 @@ Plugin 'davidhalter/jedi-vim'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => UI
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'cuviper/vim-colors-solarized'
 set background=dark
 
 colorscheme solarized
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " = Tabular * align text
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plugin 'godlygeek/tabular.git'
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vimagit
+" https://github.com/jreybert/vimagit
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Plugin 'jreybert/vimagit'
+"    :Magit
+"    Open magit buffer with :Magit command.
+"    <C-n>
+"    Jump to next hunk with <C-n>, or move the cursor as you like. The cursor is on a hunk.
+"    S
+"    While the cursor is on an unstaged hunk, press S in Normal mode: the hunk is now staged, and appears in "Staged changes" section (you can also unstage a hunk from "Staged section" with S).
+"    CC
+"    Once you have stage all the required changes, press CC.
+"        Section "Commit message" is shown.
+"        Type your commit message in this section.
+"        To commit, go back in Normal mode, and press CC (or :w if you prefer).
+
+Plugin 'tpope/vim-fugitive.git'
+
+
+""""""""""""""""""""""""""""""""""""""
+" => TagBar
+" Require universal ctags
+""""""""""""""""""""""""""""""""""""""
+Plugin 'majutsushi/tagbar'
+nmap <F3> :TagbarToggle<CR>
+
+""""""""""""""""""""""""""""""""""""""
+" => YouCompleteMe
+" Require sudo apt-get install python-dev python3-dev
+"         cd ~/.vim/bundle/YouCompleteMe
+"         ./install.py --clang-completer
+""""""""""""""""""""""""""""""""""""""
+Plugin 'valloric/youcompleteme'
 

@@ -91,6 +91,9 @@ else
     set wildignore+=.git\*,.hg\*,.svn\*
 endif
 
+" Display line number
+set number
+
 "Always show current position
 set ruler
 
@@ -139,7 +142,7 @@ set t_vb=
 set tm=500
 
 " Add a bit extra margin to the left
-set foldcolumn=1
+set foldcolumn=0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -148,7 +151,7 @@ set foldcolumn=1
 syntax enable
 
 try
-    colorscheme peaksea
+    colorscheme solarized
 catch
 endtry
 
@@ -182,15 +185,15 @@ set noswapfile
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use spaces instead of tabs
-set expandtab
+set noexpandtab
 
 " Be smart when using tabs ;)
-set smarttab
+"set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4
+set shiftwidth=8
+set tabstop=8
+set softtabstop=8
 
 " Linebreak on 500 characters
 set lbr
@@ -233,15 +236,12 @@ map <C-h> <C-W>h
 map <leader>ba :bufdo bd<cr>
 
 " Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove <cr>
-map <leader>t<leader> :tabnext<cr>
-map <M-l> :tabnext<cr>
-map <leader>th :tabprevious<cr>
-map <M-h> :tabprevious<cr>
-map <leader>tl :tabnext<cr>
+nnoremap tc :tabnew<cr>
+nnoremap to :tabonly<cr>
+nnoremap tx :tabclose<cr>
+nnoremap tm :tabmove <cr>
+nnoremap tp :tabprevious<cr>
+nnoremap tn :tabnext<cr>
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
@@ -307,8 +307,14 @@ func! DeleteTrailingWS()
   %s/\s\+$//ge
   exe "normal `z"
 endfunc
+func! DeleteTrailingFakeSpace()
+  exe "normal mz"
+  %s/ / /ge
+  exe "normal `z"
+endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
+""autocmd BufWrite * :call DeleteTrailingFakeSpace()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
