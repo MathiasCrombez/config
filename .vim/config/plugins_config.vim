@@ -64,6 +64,7 @@ let g:user_emmet_mode='a'
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
+let g:snipMate = { 'snippet_version' : 1 }
 
 " Optional:
 Plugin 'honza/vim-snippets'
@@ -222,4 +223,5 @@ nmap <F3> :TagbarToggle<CR>
 "         ./install.py --clang-completer
 """"""""""""""""""""""""""""""""""""""
 Plugin 'valloric/youcompleteme'
+let g:ycm_confirm_extra_conf = 0
 

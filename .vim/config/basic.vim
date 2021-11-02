@@ -184,23 +184,23 @@ set noswapfile
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use spaces instead of tabs
-set noexpandtab
+" Linebreak on 500 characters
+set lbr
+set tw=500
 
 " Be smart when using tabs ;)
 "set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=8
-set tabstop=8
-set softtabstop=8
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
 
-" Linebreak on 500 characters
-set lbr
-set tw=500
+" Use spaces instead of tabs
+set expandtab
+set autoindent "Auto indent
+set smartindent "Smart indent
 
-set ai "Auto indent
-set si "Smart indent
 set wrap "Wrap lines
 
 
@@ -440,3 +440,20 @@ endfunction
 
 set tags=tags;
 set tags+=.git/tags;
+
+
+" Switch to kernel indentation
+function! ToggleIndentation()
+    if &tabstop == 8
+        set expandtab
+        set shiftwidth=4
+        set tabstop=4
+        set softtabstop=4
+    else
+        set noexpandtab
+        set shiftwidth=8
+        set tabstop=8
+        set softtabstop=8
+    endif
+endfunction
+nmap <F4> :call ToggleIndentation()<cr>

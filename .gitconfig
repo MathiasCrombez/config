@@ -11,15 +11,17 @@
     dt = difftool
     ci = commit
     lg = log --graph --date=relative --pretty=tformat:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%an %ad)%Creset'
+    klg = log --date=relative --pretty=tformat:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%an %ad)%Creset'
     ls = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     la = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
+    kla = log --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
     ll = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --numstat
     oops = commit --amend --no-edit
     review-local = "!git lg @{push}.." 
     update = pull --ff-only
     patch = commit --amend --no-edit --reset-author
     draft = !sh -c 'git push origin HEAD:refs/drafts/${1}' -
-    publish = !sh -c 'gitdir=$(git rev-parse --git-dir) && scp -p -P 2051 $(whoami)@ger.sds.safran:hooks/commit-msg ${gitdir}/hooks/ && git commit --amend && git push origin HEAD:refs/for/${1}' -
+    publish = "!f() { git push origin HEAD:refs/for/${1} ; }; f"
     # Or pre 2.5, as we didn't differential push and upstream in shorthands:
     # review-local = lg @{upstream}..
 [core]
@@ -44,15 +46,17 @@
     #
     # Don't consider trailing space change as a cause for merge conflicts
     whitespace = -trailing-space
+
 [diff]
     # Use better, descriptive initials (c, i, w) instead of a/b.
-    mnemonicPrefix = true
+    # mnemonicPrefix = true
     # Show renames/moves as such
     renames = true
     # When using --word-diff, assume --word-diff-regex=.
     wordRegex = .
     # Display submodule-related information (commit listings)
     # submodule = log
+    tool = vimdiff
 [fetch]
     # Auto-fetch submodule changes (sadly, won't auto-update)
     recurseSubmodules = on-demand
@@ -68,6 +72,7 @@
     # Display common-ancestor blocks in conflict hunks
     conflictStyle = diff3
     ff = false
+    tool = meld
 [mergetool]
     # Clean up backup files created by merge tools on tool exit
     keepBackup = false
@@ -88,7 +93,7 @@
     # Default push should only push the current branch to its push target, regardless of its remote name
     default = upstream
     # When pushing, also push tags whose commit-ishs are now reachable upstream
-    followTags = true
+    followTags = false
 [rerere]
     # If, like me, you like rerere, uncomment these
     # autoupdate = true
@@ -113,3 +118,13 @@
     prereleaseSuffix = .rc
 [difftool]
     prompt = false
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[pack]
+	windowMemory = 100m
+	SizeLimit = 100m
+	threads = 1
+	window = 0

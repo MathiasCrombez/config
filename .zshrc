@@ -155,6 +155,24 @@ alias vim-extended='vim ~/.vim/config/extended.vim'
 alias vim-filetypes='vim ~/.vim/config/filetypes.vim'
 alias vim-plugins='vim ~/.vim/config/plugins_config.vim'
 
+
+lf () {
+	dir="."
+	if [ "$#" -eq 2 ]; then
+		dir="$2"
+	fi
+	find $dir -name "*$1*"
+}
+
+lc () {
+	dir="."
+	if [ "$#" -eq 2 ]; then
+		dir="$2"
+	fi
+	find $dir -iname "*$1*"
+}
+
+
 eval `dircolors ~/.solarized/dircolors`
 
 
@@ -173,21 +191,6 @@ man() {
         man "$@"
 }
 
-dts () {
-	id=1
-	target=""
-	[ -n "$1" ] && id=$1
-	file="arch/arm64/boot/dts/renesas/r8a7795-nis8200-db-a-0${id}.dts"
-	[ -f "packages/kernel-rcar/${file}" ] && target="packages/kernel-rcar/${file}"
-	[ -f "kernel-rcar/${file}" ] && target="kernel-rcar/${file}"
-	[ -f "${file}" ] && target="${file}"
-	if [ -n "$target" ]; then
-		vim ${target}
-	else
-		echo "$file not found"
-	fi
-}
-
 ##################################################################
 # Binding
 
@@ -204,5 +207,4 @@ zstyle :compinstall filename '$HOME/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
-DEFAULT_USER=mathias
-prompt_context(){}
+DEFAULT_USER=$USER

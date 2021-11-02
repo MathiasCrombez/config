@@ -67,3 +67,10 @@ au FileType gitcommit call setpos('.', [0, 1, 1, 0])
 """""""""""""""""""""""""""""""
 au FileType c setl cindent
 au FileType c setl cinoptions :0,l1,t0,g0,(0
+
+au FileType groovy setl nocindent
+au FileType groovy setl nosmartindent
+au FileType groovy setl expandtab
+au FileType groovy setl shiftwidth=4
+au FileType groovy setl tabstop=4
+au FileType groovy setl softtabstop=4
