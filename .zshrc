@@ -173,7 +173,7 @@ lc () {
 }
 
 
-eval `dircolors ~/.solarized/dircolors`
+#eval `dircolors ~/.solarized/dircolors`
 
 
 dockergo () {
